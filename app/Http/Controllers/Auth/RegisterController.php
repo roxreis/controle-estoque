@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\User;
+use App\User; //importa a classe model User
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -48,7 +48,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+        return Validator::make($data, [ //validacao de dados
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -63,10 +63,30 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        //pego nome do arquivo
+        $nomeArquivo = $data['img']->getClientOriginalName();
+        // pego a data do sistema
+        $dataAtual = date('y-m-d');
+        //gero o link para meu usuario acessar
+        $nomeArquivo = $dataAtual.'/'.$nomeArquivo;
+        //salvo a imagem dentrop da pasta storage
+        $caminhoImg = "storage/profile/$nomeArquivo";
+        
+        //funcao storeAs salva no lugar e com o nome que vc deu 
+        $resultado = $data['img']->storeAs('public/profile', $nomeArquivo);
+
+        // dd($data['img']);
+
+        //php artisan storage:link -> serve para linkar a pasta public para que as imagens colocadas nela possam ser acessadas pelo usuario, pq por padrao ela é bloqueada - criamos nesta pasta uma outra pasta chamada 'profile
+        
+        
+
+        return User::create([ //no automatico o laravel ja cria isso 
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'img_profile'=> $caminhoImg,
+            'active'=> 1,
         ]);
     }
 }
