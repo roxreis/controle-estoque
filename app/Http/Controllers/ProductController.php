@@ -27,43 +27,57 @@ class ProductController extends Controller
     //        echo "Deu errado";
     //    }
 
-      return view('products.form', ["result"=>$result]);
+      return view('products.formRegister', ["result"=>$result]);
 
     }
 
     public function viewForm(Request $request){
-        return view('products.form'); //para pegar uma view dentro de uma pasta, é necessario especificar a pasta e a sintax é ponto e nao barra
+        return view('products.formRegister'); //para pegar uma view dentro de uma pasta, é necessario especificar a pasta e a sintax é ponto e nao barra
 
 
     }
-
-    public function update(Request $request){
-
-        //para atualizar devemos buscar um objeto ao invez de criar
-        //usando Product::find($iddo produto)
-        //vai ser necessario usar rotas com parametros
-
-        $newProduct = Product::find(//id do produto);
-        $newProduct->name = $request->nameProducts;
-        $newProduct->description = $request->description;
-        $newProduct->quantity = $request->quantity;
-        $newProduct->price = $request->price;
-        $newProduct->user_id= Auth::user()->id; 
+    
+    public function viewFormUpdate(Request $request, $id=0){
+        $product = Product::find($id);
+        if($product){
+            return view('products.formUpdate',['product'=>$product]);
+        }else{
+            return view('products.formUpdate');
+        }
+       
 
     }
 
-    public function delete(Request $request)
-    // para deletar vc vau usar Produtc::destry($id)
+
+    // public function update(Request $request){
+
+    //     //para atualizar devemos buscar um objeto ao invez de criar
+    //     //usando Product::find($id do produto)
+    //     //vai ser necessario usar rotas com parametros
 
 
 
-    public function viewAllProducts(Request $request){
-        //vai precisar do Product::All
-    }
+    //     $newProduct = Product::find(//id do produto);
+    //     $newProduct->name = $request->nameProducts;
+    //     $newProduct->description = $request->description;
+    //     $newProduct->quantity = $request->quantity;
+    //     $newProduct->price = $request->price;
+    //     $newProduct->user_id= Auth::user()->id; 
 
-    public function viewOneProduct(Request $request){
-        // vai precisar do Product::find($idProduct)
-    }
+    // }
+
+    // public function delete(Request $request)
+    // // para deletar vc vau usar Produtc::destry($id)
+
+
+
+    // public function viewAllProducts(Request $request){
+    //     //vai precisar do Product::All
+    // }
+
+    // public function viewOneProduct(Request $request){
+    //     // vai precisar do Product::find($idProduct)
+    // }
 
 
 }
