@@ -49,31 +49,39 @@ class ProductController extends Controller
     }
 
 
-    // public function update(Request $request){
+    public function update(Request $request){
 
-    //     //para atualizar devemos buscar um objeto ao invez de criar
-    //     //usando Product::find($id do produto)
-    //     //vai ser necessario usar rotas com parametros
+        //para atualizar devemos buscar um objeto ao invez de criar
+        //usando Product::find($id do produto)
+        //vai ser necessario usar rotas com parametros
+        $Product = Product::find($request->idProduct);
+        $Product->name = $request->nameProducts;
+        $Product->description = $request->description;
+        $Product->quantity = $request->quantity;
+        $Product->price = $request->price;
+         
+        $result = $Product->save();
+ 
+       return view('products.formUpdate', ["result"=>$result]);
 
+    }
 
+    public function delete(Request $request, $id=0){
+    // para deletar vc vau usar Produtc::destry($id)
+         $result = Product::destroy($id);
+         if($result){
+             return redirect('/produtos');
+         }
 
-    //     $newProduct = Product::find(//id do produto);
-    //     $newProduct->name = $request->nameProducts;
-    //     $newProduct->description = $request->description;
-    //     $newProduct->quantity = $request->quantity;
-    //     $newProduct->price = $request->price;
-    //     $newProduct->user_id= Auth::user()->id; 
+    } 
+    
+    
+    public function viewAllProducts(Request $request){
+        //vai precisar do chamar o modelo Product e o metodo -> All
 
-    // }
-
-    // public function delete(Request $request)
-    // // para deletar vc vau usar Produtc::destry($id)
-
-
-
-    // public function viewAllProducts(Request $request){
-    //     //vai precisar do Product::All
-    // }
+        $listProducts = Product::all();
+        return view('products.products',['listProducts'=>$listProducts]);
+    }
 
     // public function viewOneProduct(Request $request){
     //     // vai precisar do Product::find($idProduct)

@@ -14,7 +14,7 @@
       <form action="/produtos/atualizar" method="POST" enctype="multipart/form-data">
          @csrf
 
-        <input type="text" name="idProduct" valeu="{{$product->id}}" hidden>
+        <input type="text" name="idProduct" value="{{$product->id}}" hidden>
         <div class="form-group">
             <label for="nameProduct">Nome Produto</label>
             <input class="form-control" type="text" name="nameProducts" id="nameProducts" value="{{$product->name}}">
@@ -41,6 +41,9 @@
         </div>
     </form>
     </div>
+
+        @elseif(isset($result))
+
     @else
     </br></br></br><h1>Você nao passou um id ou o produto nao existe</h1>
     @endif
